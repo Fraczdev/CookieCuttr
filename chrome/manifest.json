@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Frictionless — Cookie Auto-Skip & Read Time",
+  "name": "CookieCuttr",
   "version": "1.0.0",
   "description": "Silently rejects cookie/consent banners and shows you how long an article will take to read before you commit to it.",
   "permissions": ["storage"],
