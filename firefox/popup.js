@@ -32,16 +32,14 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('cookieToggle').addEventListener('change', (e) => {
     const enabled = e.target.checked;
     chrome.storage.local.set({
-      cookieSkipEnabled: enabled,
-      readTimeEnabled: enabled ? false : document.getElementById('readTimeToggle').checked
+      cookieSkipEnabled: enabled
     });
   });
 
   document.getElementById('readTimeToggle').addEventListener('change', (e) => {
     const enabled = e.target.checked;
     chrome.storage.local.set({
-      readTimeEnabled: enabled,
-      cookieSkipEnabled: enabled ? false : document.getElementById('cookieToggle').checked
+      readTimeEnabled: enabled
     });
   });
 
