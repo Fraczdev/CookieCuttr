@@ -1,4 +1,3 @@
-// Only one feature is active at a time — cookie auto-skip is on by default.
 const DEFAULTS = {
   cookieSkipEnabled: true,
   readTimeEnabled: false,
