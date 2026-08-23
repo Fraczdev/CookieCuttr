@@ -1,10 +1,11 @@
-# Frictionless — Cookie Auto-Skip & Read Time
+# Cookiecuttr
 
-**Category:** Browser extension (Chrome / Manifest V3)
+A web browser extension that silently rejects cookie/consent banners and shows you how long an article will take to read before you commit to it.
+(Chrome / Manifest V3)
 
 ## The problem
 
-Two tiny frictions repeat on almost every website you visit:
+Two tiny problems repeat on almost every website you visit:
 
 1. **Cookie/consent banners.** Every single site now interrupts you with a popup asking about cookies. You click "reject" (or hunt for it under "manage preferences") dozens of times a day, on every device, forever. It's the same click, over and over, for zero personal benefit.
 2. **Committing to an article blind.** You click a link with no idea if it's a 2-minute read or a 20-minute one, so you either bail partway through or avoid long pieces you'd have actually wanted to read.
@@ -28,15 +29,17 @@ A lightweight extension with two content-script features and a stats popup:
 - Click the toolbar icon to see how many banners have been auto-skipped, how many reading badges have been shown, and an estimated time saved.
 - Independent on/off toggles for each feature, plus a reset button — so the tool stays legible and controllable rather than being invisible magic.
 
-## Why 3 separate QoL improvements
+## The separate improvements
 1. **Removes a repetitive click** you make on nearly every site, without trading your privacy for convenience (it rejects, doesn't accept).
 2. **Gives you information you need *before* committing to a task** (reading an article), not after.
 3. **Makes the automation visible and trustworthy** via the stats popup — you can see exactly what it did and turn any part of it off.
 
-## Install & try it (Chrome / Edge / Brave)
+## Try it (Chrome / Edge / Brave)
 1. Go to `chrome://extensions`
 2. Turn on **Developer mode** (top-right toggle)
-3. Click **Load unpacked** and select this `frictionless-extension` folder
+3. Click **Load extension from zip file** and select this `cookiecuttr-chrome` or `cookiecuttr-firefox` zip files in releases, depending on your browser.
+OR
+3. Visit the chrome extension marketplace, and search for 'Cookiecuttr', and install it.
 4. Visit a few news sites — you should see cookie banners disappear on load and a read-time badge appear in the top-right of article pages
 5. Click the extension icon in the toolbar to see live stats and toggle features
 
@@ -61,11 +64,11 @@ instead of Chrome's `"background": { "service_worker": "background.js" }`. `back
 
 A `browser_specific_settings.gecko.id` was added, which Firefox requires for permanent installs (it's optional for temporary loading below).
 
-### Install & try it (Firefox)
+### Try it (Firefox)
 1. Go to `about:debugging#/runtime/this-firefox`
 2. Click **Load Temporary Add-on…**
 3. Select the `manifest.json` file inside this `frictionless-extension-firefox` folder
 4. Visit a few news sites — cookie banners should disappear on load and a read-time badge should appear on article pages
 5. Click the toolbar icon for live stats and feature toggles
 
-Note: temporary add-ons are removed when Firefox restarts. For a permanent install during development, use `about:config` → set `xpinstall.signatures.required` to `false` on Firefox Developer Edition or Nightly, or submit to `addons.mozilla.org` for signing to distribute normally.
+Note: temporary add-ons are removed when Firefox restarts. For a permanent install during development, use `about:config` → set `xpinstall.signatures.required` to `false` on Firefox Developer Edition or Nightly, or search it on the extension marketplace for a permanent installation.
