@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Frictionless</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <header>
+    <div class="logo">🧹</div>
+    <div>
+      <h1>Frictionless</h1>
+      <p class="subtitle">Fewer clicks. Faster reads.</p>
+    </div>
+  </header>
+
+  <section class="stats">
+    <div class="stat">
+      <span class="stat-number" id="bannersBlocked">0</span>
+      <span class="stat-label">banners auto-skipped</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number" id="timeSaved">0s</span>
+      <span class="stat-label">est. time saved</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number" id="badgesShown">0</span>
+      <span class="stat-label">read-time badges shown</span>
+    </div>
+  </section>
+
+  <section class="controls">
+    <p class="controls-hint">Only one automation can run at a time.</p>
+    <label class="toggle-row">
+      <span>
+        <strong>Auto-skip cookie banners</strong>
+        <small>Clicks "reject" / hides the popup for you</small>
+      </span>
+      <input type="checkbox" id="cookieToggle" />
+    </label>
+
+    <label class="toggle-row">
+      <span>
+        <strong>Reading-time badge</strong>
+        <small>Shows minutes + word count on articles</small>
+      </span>
+      <input type="checkbox" id="readTimeToggle" />
+    </label>
+  </section>
+
+  <footer>
+    <button id="resetBtn">Reset stats</button>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+#frictionless-readtime-badge {
+  all: initial;
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 2147483647;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #1e293b;
+  color: #f1f5f9;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13px;
+  line-height: 1;
+  padding: 10px 12px;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: auto;
+}
+
+#frictionless-readtime-badge.fr-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#frictionless-readtime-badge .fr-clock {
+  font-size: 14px;
+  color: #2dd4bf;
+}
+
+#frictionless-readtime-badge .fr-text {
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+#frictionless-readtime-badge .fr-close {
+  all: unset;
+  cursor: pointer;
+  color: #94a3b8;
+  font-size: 16px;
+  line-height: 1;
+  padding: 4px 6px;
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+#frictionless-readtime-badge .fr-close:hover {
+  color: #f1f5f9;
+}
