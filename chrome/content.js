@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  // ---------- Settings (loaded async, default to enabled) ----------
+
   let settings = { cookieSkipEnabled: true, readTimeEnabled: true };
 
   const settingsReady = new Promise((resolve) => {
@@ -38,8 +38,7 @@
     { reject: '._brlbs-btn.\\!bg-none, [data-borlabs-cookie-consent-decline]', container: '#BorlabsCookieBox' }
   ];
 
-  // Multi-language phrase lists for the generic (non-vendor) fallback.
-  // Buttons are matched on their full trimmed text, case-insensitively.
+
   const REJECT_PHRASES = [
     // English
     'reject all', 'reject', 'decline all', 'decline', 'disagree', 'deny',
@@ -103,11 +102,7 @@
     return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
 
-  // Contains-based matching (not exact match): a button like "Reject all
-  // non-essential cookies" or one with extra icon/whitespace inside still
-  // matches, as long as one of these phrases appears anywhere in its text.
-  // Word-boundaries matter here: without them, short phrases like "ok"
-  // would false-positive inside unrelated words (e.g. "c-ok-ies").
+
   function buildBoundaryMatchers(phrases) {
     return phrases.map((p) => new RegExp(`\\b${escapeRegex(p)}\\b`, 'i'));
   }
@@ -148,9 +143,7 @@
     return (el.innerText || el.textContent || '').trim();
   }
 
-  // Buttons sometimes carry their label as an aria-label/value instead of
-  // (or in addition to) visible text — e.g. icon-only buttons on Google
-  // properties. Check all of them.
+
   function getControlText(el) {
     const raw = el.innerText || el.textContent || el.getAttribute('aria-label') || el.value || '';
     return normalizeText(raw);
@@ -165,7 +158,7 @@
   }
 
   function restoreScroll() {
-    // Many banners lock body scroll; undo common patterns.
+
     document.documentElement.style.overflow = '';
     document.body.style.overflow = '';
     document.body.style.position = '';
@@ -188,7 +181,7 @@
       const container = rule.container ? root.querySelector(rule.container) : btn?.closest('div');
       if (btn && isVisible(btn)) {
         btn.click();
-        // give it a tick then remove any leftover overlay
+
         setTimeout(() => {
           const leftover = rule.container ? root.querySelector(rule.container) : null;
           if (leftover) removeElement(leftover, 'vendor');
@@ -202,18 +195,13 @@
   }
 
   function pageLooksLikeConsentContext() {
-    // Gate for the broad, geometry-free search below: only go hunting for
-    // any "reject"-labeled button on the page if the page actually mentions
-    // cookies/consent/privacy somewhere near the top. Prevents accidentally
-    // clicking an unrelated "Reject" button (e.g. on a form) on other pages.
+
     const sampleText = normalizeText((document.body ? document.body.innerText : '').slice(0, 4000));
     return COOKIE_KEYWORDS.test(sampleText) || COOKIE_KEYWORDS.test(normalizeText(document.title));
   }
 
   function tryGenericRejectAnywhere(root = document) {
-    // Handles full-page consent screens (e.g. Google's consent.google.com,
-    // YouTube's "Before you continue" screen) that don't look like a small
-    // fixed/sticky banner and so are missed by the container-based check.
+
     if (!pageLooksLikeConsentContext()) return false;
 
     const candidates = root.querySelectorAll(
@@ -223,7 +211,7 @@
       if (handledElements.has(el)) continue;
       if (!isVisible(el)) continue;
       const t = getControlText(el);
-      if (!t || t.length > 60) continue; // real button labels are short; skip stray text blocks
+      if (!t || t.length > 60) continue; 
       if (isRejectText(t)) {
         handledElements.add(el);
         el.click();
@@ -237,8 +225,7 @@
   }
 
   function findGenericBanner(root = document) {
-    // Look at fixed/sticky, high z-index, viewport-anchored elements that
-    // mention cookies/consent and contain an accept-or-reject button.
+
     const candidates = root.querySelectorAll('div, section, aside, [role="dialog"], [role="alertdialog"]');
     for (const el of candidates) {
       if (handledElements.has(el)) continue;
@@ -252,7 +239,7 @@
       if (!nearEdge) continue;
 
       const text = normalizeText(textOf(el));
-      if (text.length > 4000 || text.length < 10) continue; // too big = whole page; too small = noise
+      if (text.length > 4000 || text.length < 10) continue; 
       if (!COOKIE_KEYWORDS.test(text)) continue;
 
       const buttons = el.querySelectorAll('button, a[role="button"], [type="button"], div[role="button"]');
@@ -272,8 +259,7 @@
         setTimeout(() => removeElement(el, 'generic-reject'), 150);
         return true;
       }
-      // No explicit reject control found — don't consent on the user's
-      // behalf by clicking accept. Just remove the nag and unlock scroll.
+
       if (acceptBtn || true) {
         removeElement(el, 'generic-hide');
         return true;
@@ -295,7 +281,7 @@
     const observer = new MutationObserver(() => sweepForBanners());
     observer.observe(document.documentElement, { childList: true, subtree: true });
 
-    // Banners often arrive after async scripts; keep checking briefly, then stop.
+   
     let ticks = 0;
     const interval = setInterval(() => {
       ticks += 1;
@@ -307,14 +293,12 @@
     }, 500);
   }
 
-  // =========================================================
-  // FEATURE 2: Reading-time badge
-  // =========================================================
+
 
   const WPM = 200;
 
   function estimateReadTime() {
-    // Prefer <article>, else the largest text-dense block, else body.
+
     let source = document.querySelector('article');
     if (!source) {
       let best = null;
@@ -335,7 +319,7 @@
     if (document.getElementById('frictionless-readtime-badge')) return;
 
     const { words, minutes } = estimateReadTime();
-    if (words < 150) return; // not really an "article" page, skip noise
+    if (words < 150) return;
 
     const badge = document.createElement('div');
     badge.id = 'frictionless-readtime-badge';
@@ -353,15 +337,12 @@
       if (removed) return;
       removed = true;
       badge.classList.remove('fr-visible');
-      // Remove immediately AND after the fade-out, so it disappears even if
-      // the CSS transition doesn't run for any reason (e.g. reduced-motion).
+
       if (badge.parentNode) badge.parentNode.removeChild(badge);
     };
 
     const closeBtn = badge.querySelector('.fr-close');
-    // Bind on both click and pointerdown as a safety net: some sites leave
-    // behind global click interceptors (from the very cookie banners we
-    // remove) that can swallow bare 'click' events.
+
     closeBtn.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); removeBadge(); });
     closeBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); removeBadge(); });
 
@@ -382,13 +363,11 @@
     const onNavigate = () => {
       if (location.href === lastUrl) return;
       lastUrl = location.href;
-      removeExistingBadge(); // old page's estimate is stale — clear it right away
-      setTimeout(injectReadTimeBadge, 500); // let the new view's content render, then re-estimate
+      removeExistingBadge(); 
+      setTimeout(injectReadTimeBadge, 500); 
     };
 
-    // Full page loads already get a fresh content script (badge is gone
-    // automatically). This covers single-page-app sites that swap content
-    // via history.pushState/replaceState without a real navigation.
+    
     const wrap = (fn) => function (...args) {
       const result = fn.apply(this, args);
       onNavigate();
@@ -398,13 +377,12 @@
     history.replaceState = wrap(history.replaceState);
     window.addEventListener('popstate', onNavigate);
 
-    // Belt-and-suspenders for sites that change the URL via other means.
+    
     setInterval(onNavigate, 1000);
   }
 
-  // =========================================================
   // Boot
-  // =========================================================
+
 
   settingsReady.then(() => {
     startCookieSweeper();
