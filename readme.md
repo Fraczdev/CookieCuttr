@@ -79,6 +79,7 @@ A `browser_specific_settings.gecko.id` was added, which Firefox requires for per
 4. Visit a few news sites — cookie banners should disappear on load and a read-time badge should appear on article pages
 5. Click the toolbar icon for live stats and feature toggles
 OR
-1. Go to `addons.mozilla.org
+1. Go to `addons.mozilla.org`
+2. Find addons -> Search for `Cookiecuttr` and install it.
 
 Note: temporary add-ons are removed when Firefox restarts. For a permanent install during development, use `about:config` → set `xpinstall.signatures.required` to `false` on Firefox Developer Edition or Nightly, or search it on the extension marketplace for a permanent installation.
