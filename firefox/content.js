@@ -3,6 +3,9 @@
 
 
   let settings = { cookieSkipEnabled: true, readTimeEnabled: true };
+  let cookieObserver = null;
+  let cookieInterval = null;
+  let sweepQueued = false;
 
   const settingsReady = new Promise((resolve) => {
     try {
@@ -24,6 +27,7 @@
 
 
   const VENDOR_RULES = [
+    { reject: '#bbccookies button[id*="reject" i], #bbccookies [data-testid*="reject" i], #bbccookies [aria-label*="reject" i]', container: '#bbccookies' },
     { reject: '#onetrust-reject-all-handler', container: '#onetrust-banner-sdk, #onetrust-consent-sdk' },
     { reject: '.ot-pc-refuse-all-handler', container: '#onetrust-pc-sdk' },
     { reject: '#CybotCookiebotDialogBodyLevelButtonLevelOptinDeclineAll, #CybotCookiebotDialogBodyButtonDecline', container: '#CybotCookiebotDialog' },
@@ -144,7 +148,16 @@
 
 
   function getControlText(el) {
-    const raw = el.innerText || el.textContent || el.getAttribute('aria-label') || el.value || '';
+    const raw = [
+      el.innerText,
+      el.textContent,
+      el.getAttribute('aria-label'),
+      el.getAttribute('title'),
+      el.getAttribute('name'),
+      el.id,
+      el.className,
+      el.value
+    ].filter(Boolean).join(' ');
     return normalizeText(raw);
   }
 
@@ -204,7 +217,7 @@
     if (!pageLooksLikeConsentContext()) return false;
 
     const candidates = root.querySelectorAll(
-      'button, a[role="button"], [type="button"], div[role="button"], span[role="button"]'
+      'button, a[role="button"], [type="button"], div[role="button"], span[role="button"], [id*="cookie" i], [class*="cookie" i], [aria-label*="cookie" i]'
     );
     for (const el of candidates) {
       if (handledElements.has(el)) continue;
@@ -241,7 +254,7 @@
       if (text.length > 4000 || text.length < 10) continue; 
       if (!COOKIE_KEYWORDS.test(text)) continue;
 
-      const buttons = el.querySelectorAll('button, a[role="button"], [type="button"], div[role="button"]');
+      const buttons = el.querySelectorAll('button, a[role="button"], [type="button"], div[role="button"], [id*="cookie" i], [class*="cookie" i], [aria-label*="cookie" i]');
       if (buttons.length === 0) continue;
 
       let rejectBtn = null;
@@ -267,29 +280,56 @@
     return false;
   }
 
+  function tryBbcBanner(root = document) {
+    const banner = root.querySelector('#bbccookies, [id*="bbc" i][id*="cookie" i]');
+    if (!banner || !isVisible(banner)) return false;
+    const reject = banner.querySelector('button[id*="reject" i], [data-testid*="reject" i], [aria-label*="reject" i]');
+    if (reject && isVisible(reject)) reject.click();
+    setTimeout(() => removeElement(banner, 'bbc'), 150);
+    return true;
+  }
+
   function sweepForBanners() {
     if (!settings.cookieSkipEnabled) return;
-    const found = tryVendorRules() || tryGenericRejectAnywhere() || findGenericBanner();
+    const found = tryBbcBanner() || tryVendorRules() || tryGenericRejectAnywhere() || findGenericBanner();
     return found;
   }
 
+  function queueBannerSweep() {
+    if (sweepQueued) return;
+    sweepQueued = true;
+    requestAnimationFrame(() => {
+      sweepQueued = false;
+      sweepForBanners();
+    });
+  }
+
   function startCookieSweeper() {
-    if (!settings.cookieSkipEnabled) return;
+    if (!settings.cookieSkipEnabled || cookieObserver) return;
     sweepForBanners();
 
-    const observer = new MutationObserver(() => sweepForBanners());
-    observer.observe(document.documentElement, { childList: true, subtree: true });
+    cookieObserver = new MutationObserver(queueBannerSweep);
+    cookieObserver.observe(document.documentElement, { childList: true, subtree: true });
 
   
     let ticks = 0;
-    const interval = setInterval(() => {
+    cookieInterval = setInterval(() => {
       ticks += 1;
       sweepForBanners();
       if (ticks > 20) { 
-        clearInterval(interval);
-        observer.disconnect();
+        clearInterval(cookieInterval);
+        cookieInterval = null;
+        cookieObserver.disconnect();
+        cookieObserver = null;
       }
     }, 500);
+  }
+
+  function stopCookieSweeper() {
+    if (cookieInterval) clearInterval(cookieInterval);
+    if (cookieObserver) cookieObserver.disconnect();
+    cookieInterval = null;
+    cookieObserver = null;
   }
 
 
@@ -313,12 +353,20 @@
     return { words, minutes: Math.max(1, Math.round(words / WPM)) };
   }
 
-  function injectReadTimeBadge() {
-    if (!settings.readTimeEnabled) return;
-    if (document.getElementById('frictionless-readtime-badge')) return;
+  let badgeShownForUrl = null;
+
+  function injectReadTimeBadge(force = false) {
+    if (!settings.readTimeEnabled && !force) return;
+    if (!force && badgeShownForUrl === location.href) return;
+    if (document.getElementById('frictionless-readtime-badge')) {
+      if (!force) return;
+      removeExistingBadge();
+    }
 
     const { words, minutes } = estimateReadTime();
-    if (words < 150) return; 
+    if (words < 150 && !force) return;
+    const alreadyCounted = badgeShownForUrl === location.href;
+    badgeShownForUrl = location.href;
 
     const badge = document.createElement('div');
     badge.id = 'frictionless-readtime-badge';
@@ -348,7 +396,7 @@
     requestAnimationFrame(() => badge.classList.add('fr-visible'));
     setTimeout(removeBadge, AUTO_CLOSE_MS);
 
-    sendStat('READ_BADGE_SHOWN');
+    if (!alreadyCounted) sendStat('READ_BADGE_SHOWN');
   }
 
   function removeExistingBadge() {
@@ -362,6 +410,7 @@
     const onNavigate = () => {
       if (location.href === lastUrl) return;
       lastUrl = location.href;
+      badgeShownForUrl = null;
       removeExistingBadge(); 
       setTimeout(injectReadTimeBadge, 500); 
     };
@@ -379,6 +428,55 @@
     
     setInterval(onNavigate, 1000);
   }
+
+  chrome.storage.onChanged.addListener((changes, area) => {
+    if (area !== 'local') return;
+    if (changes.cookieSkipEnabled) {
+      settings.cookieSkipEnabled = changes.cookieSkipEnabled.newValue !== false;
+      if (settings.cookieSkipEnabled) startCookieSweeper();
+      else stopCookieSweeper();
+    }
+    if (changes.readTimeEnabled) {
+      settings.readTimeEnabled = changes.readTimeEnabled.newValue !== false;
+      if (!settings.readTimeEnabled) removeExistingBadge();
+      else injectReadTimeBadge();
+    }
+  });
+
+  let readingMarkerClickHandler = null;
+
+  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message && message.type === 'ARM_READING_MARKER') {
+      if (readingMarkerClickHandler) document.removeEventListener('click', readingMarkerClickHandler, true);
+      const onClick = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        document.removeEventListener('click', onClick, true);
+        readingMarkerClickHandler = null;
+        document.documentElement.style.cursor = '';
+        chrome.runtime.sendMessage({
+          type: 'SAVE_READING_MARKER',
+          marker: {
+            slot: Number(message.slot) || 0,
+            url: location.href,
+            x: window.scrollX,
+            y: window.scrollY,
+            timestampEnabled: Boolean(message.timestampEnabled),
+            timestamp: typeof message.timestamp === 'string' ? message.timestamp.slice(0, 12) : ''
+          }
+        });
+      };
+      readingMarkerClickHandler = onClick;
+      document.addEventListener('click', onClick, true);
+      document.documentElement.style.cursor = 'crosshair';
+      sendResponse({ armed: true });
+    } else if (message && message.type === 'RETURN_TO_READING_MARKER') {
+      if (message.marker?.url === location.href) window.scrollTo(message.marker.x || 0, message.marker.y || 0);
+    } else if (message && message.type === 'FORCE_READ_BADGE') {
+      injectReadTimeBadge(true);
+      sendResponse({ shown: Boolean(document.getElementById('frictionless-readtime-badge')) });
+    }
+  });
 
  
   // Boot

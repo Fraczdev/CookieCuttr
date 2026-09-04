@@ -1,0 +1,18 @@
+CookieCuttr article test set
+
+Reading-time badge and reading marker:
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Introduction
+- https://www.nasa.gov/solar-system/what-is-a-black-hole/
+- https://www.bbc.com/news/articles/cly3e7x8jv4o
+
+Cookie skipper regression:
+- https://www.bbc.com/news
+- Test with the extension enabled and confirm the BBC consent surface disappears without selecting an accept option.
+
+Expected checks:
+- Short pages under 150 words do not receive a badge.
+- Longer article pages show one badge with minutes and word count.
+- Placing a marker saves the current URL and scroll position.
+- Returning to a marker restores the saved position on the matching URL.
+- Turning a feature off in the popup updates the current tab without a reload.
+- Stats increase once per handled banner or displayed badge.

@@ -8,7 +8,7 @@
 <body>
   <header>
     <div class="logo">
-      <img src= "icons/icon48.png">
+      <img src="icons/icon48.png" alt="">
     </div>
     <div>
       <h1>Cookiecuttr</h1>
@@ -17,15 +17,19 @@
   </header>
 
   <section class="stats">
-    <div class="stat">
-      <span class="stat-number" id="bannersBlocked">0</span>
-      <span class="stat-label">banners auto-skipped</span>
+    <div class="stats-heading">
+      <strong>Activity overview</strong>
+      <span>stored locally</span>
     </div>
-    <div class="stat">
+    <div class="stat stat-primary">
+      <span class="stat-number" id="bannersBlocked">0</span>
+      <span class="stat-label">banners skipped</span>
+    </div>
+    <div class="stat stat-row">
       <span class="stat-number" id="timeSaved">0s</span>
       <span class="stat-label">est. time saved</span>
     </div>
-    <div class="stat">
+    <div class="stat stat-row">
       <span class="stat-number" id="badgesShown">0</span>
       <span class="stat-label">read-time badges shown</span>
     </div>
@@ -38,7 +42,10 @@
         <strong>Auto-skip cookie banners</strong>
         <small>Clicks "reject" / hides the popup for you</small>
       </span>
-      <input type="checkbox" id="cookieToggle" />
+      <span class="io-switch">
+        <input type="checkbox" id="cookieToggle" />
+        <span class="switch-face" aria-hidden="true"></span>
+      </span>
     </label>
 
     <label class="toggle-row">
@@ -46,12 +53,45 @@
         <strong>Reading-time badge</strong>
         <small>Shows minutes + word count on articles</small>
       </span>
-      <input type="checkbox" id="readTimeToggle" />
+      <span class="io-switch">
+        <input type="checkbox" id="readTimeToggle" />
+        <span class="switch-face" aria-hidden="true"></span>
+      </span>
     </label>
+
+    <div class="markers-heading">
+      <strong>Reading markers</strong>
+      <small>Save up to three places</small>
+    </div>
+    <div class="marker-slot" data-slot="0">
+      <input class="marker-name" type="text" maxlength="32" value="untitled" aria-label="Marker 1 name">
+      <span class="marker-site">Empty</span>
+      <label class="timestamp-toggle"><input type="checkbox" class="marker-timestamp-toggle"><span>TS</span></label>
+      <button class="marker-place" type="button">Place</button>
+      <button class="marker-return" type="button" hidden>Return</button>
+      <input class="marker-timestamp" type="text" maxlength="12" placeholder="last timestamp" aria-label="Marker 1 timestamp" hidden>
+    </div>
+    <div class="marker-slot" data-slot="1">
+      <input class="marker-name" type="text" maxlength="32" value="untitled" aria-label="Marker 2 name">
+      <span class="marker-site">Empty</span>
+      <label class="timestamp-toggle"><input type="checkbox" class="marker-timestamp-toggle"><span>TS</span></label>
+      <button class="marker-place" type="button">Place</button>
+      <button class="marker-return" type="button" hidden>Return</button>
+      <input class="marker-timestamp" type="text" maxlength="12" placeholder="last timestamp" aria-label="Marker 2 timestamp" hidden>
+    </div>
+    <div class="marker-slot" data-slot="2">
+      <input class="marker-name" type="text" maxlength="32" value="untitled" aria-label="Marker 3 name">
+      <span class="marker-site">Empty</span>
+      <label class="timestamp-toggle"><input type="checkbox" class="marker-timestamp-toggle"><span>TS</span></label>
+      <button class="marker-place" type="button">Place</button>
+      <button class="marker-return" type="button" hidden>Return</button>
+      <input class="marker-timestamp" type="text" maxlength="12" placeholder="last timestamp" aria-label="Marker 3 timestamp" hidden>
+    </div>
   </section>
 
   <footer>
-    <button id="resetBtn">Reset stats</button>
+    <button id="forceBadgeBtn" type="button">Show reading badge</button>
+    <button id="resetBtn" type="button">Reset stats</button>
   </footer>
 
   <script src="popup.js"></script>

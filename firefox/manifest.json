@@ -3,7 +3,7 @@
   "name": "CookieCuttr",
   "version": "1.0.0",
   "description": "Silently rejects cookie/consent banners and shows you how long an article will take to read before you commit to it.",
-  "permissions": ["storage"],
+  "permissions": ["storage", "activeTab", "tabs"],
   "host_permissions": ["<all_urls>"],
   "icons": {
     "16": "icons/icon16.png",
