@@ -49,8 +49,7 @@ A lightweight extension with three content-script features and a stats popup:
 2. Turn on **Developer mode** (top-right toggle)
 3. Click **Load extension from zip file** and select the `cookiecuttr-chrome` or `cookiecuttr-firefox` zip file for your browser.
 
-Alternatively, visit the Chrome extension marketplace, search for **Cookiecuttr**, and install it. Then visit a few news sites and click the extension icon to view stats and controls.
-
+For now, visiting the Chrome extension marketplace and searching for it is unavailable, as to publish anything on there you need to pay a fee.
 ## Files
 - `manifest.json` — extension config (Manifest V3)
 - `content.js` / `content.css` — banner detection + reading-time badge, injected into every page
