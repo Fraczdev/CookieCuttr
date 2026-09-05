@@ -27,7 +27,7 @@
 
 
   const VENDOR_RULES = [
-    { reject: '#bbccookies button[id*="reject" i], #bbccookies [data-testid*="reject" i], #bbccookies [aria-label*="reject" i]', container: '#bbccookies' },
+    { reject: '#bbccookies button[id*="reject" i], #bbccookies [data-testid*="reject" i], #bbccookies [aria-label*="reject" i], #bbccookies [title="I do not agree" i], #bbccookies [aria-label="I do not agree" i]', container: '#bbccookies' },
     { reject: '#onetrust-reject-all-handler', container: '#onetrust-banner-sdk, #onetrust-consent-sdk' },
     { reject: '.ot-pc-refuse-all-handler', container: '#onetrust-pc-sdk' },
     { reject: '#CybotCookiebotDialogBodyLevelButtonLevelOptinDeclineAll, #CybotCookiebotDialogBodyButtonDecline', container: '#CybotCookiebotDialog' },
@@ -45,7 +45,7 @@
 
   const REJECT_PHRASES = [
     'reject all', 'reject', 'decline all', 'decline', 'disagree', 'deny',
-    'necessary only', 'only necessary', 'no thanks', 'do not accept',
+    'necessary only', 'only necessary', 'no thanks', 'do not accept', 'i do not agree',
     'use necessary cookies only', 'continue without accepting',
     'rifiuta tutto', 'rifiuta tutti', 'rifiuta', 'nega', 'solo necessari',
     'solo essenziali', 'no grazie', 'continua senza accettare', 'rifiuta i cookie',

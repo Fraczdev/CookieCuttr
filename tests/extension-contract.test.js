@@ -55,5 +55,7 @@ test('both browsers include the BBC consent path', () => {
     assert.match(source, /\[id\*="cookie" i\]/);
     assert.match(source, /el\.getAttribute\('title'\)/);
     assert.match(source, /el\.getAttribute\('name'\)/);
+    assert.match(source, /i do not agree/);
+    assert.match(source, /title="I do not agree" i/);
   }
 });
