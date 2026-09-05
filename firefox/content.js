@@ -333,7 +333,7 @@
   function injectReadTimeBadge(force = false) {
     if (!settings.readTimeEnabled && !force) return;
     if (!force && badgeShownForUrl === location.href) return;
-    if (document.getElementById('frictionless-readtime-badge')) {
+    if (document.getElementById('cookiecuttr-readtime-badge')) {
       if (!force) return;
       removeExistingBadge();
     }
@@ -344,7 +344,7 @@
     badgeShownForUrl = location.href;
 
     const badge = document.createElement('div');
-    badge.id = 'frictionless-readtime-badge';
+    badge.id = 'cookiecuttr-readtime-badge';
     badge.innerHTML = `
       <span class="fr-clock">⏱</span>
       <span class="fr-text">${minutes} min read · ${words.toLocaleString()} words</span>
@@ -375,7 +375,7 @@
   }
 
   function removeExistingBadge() {
-    const existing = document.getElementById('frictionless-readtime-badge');
+    const existing = document.getElementById('cookiecuttr-readtime-badge');
     if (existing) existing.remove();
   }
 
@@ -449,7 +449,7 @@
       if (message.marker?.url === location.href) window.scrollTo(message.marker.x || 0, message.marker.y || 0);
     } else if (message && message.type === 'FORCE_READ_BADGE') {
       injectReadTimeBadge(true);
-      sendResponse({ shown: Boolean(document.getElementById('frictionless-readtime-badge')) });
+      sendResponse({ shown: Boolean(document.getElementById('cookiecuttr-readtime-badge')) });
     }
   });
 

@@ -75,7 +75,7 @@ A `browser_specific_settings.gecko.id` was added, which Firefox requires for per
 ### Try it (Firefox)
 1. Go to `about:debugging#/runtime/this-firefox`
 2. Click **Load Temporary Add-on…**
-3. Select the `manifest.json` file inside this `frictionless-extension-firefox` folder
+3. Select the `manifest.json` file inside this `cookiecuttr-firefox` folder
 4. Visit a few news sites — cookie banners should disappear on load and a read-time badge should appear on article pages
 5. Click the toolbar icon for live stats and feature toggles
 OR

@@ -1,4 +1,4 @@
-#frictionless-readtime-badge {
+#cookiecuttr-readtime-badge {
   all: initial;
   position: fixed;
   top: 16px;
@@ -22,22 +22,22 @@
   pointer-events: auto;
 }
 
-#frictionless-readtime-badge.fr-visible {
+#cookiecuttr-readtime-badge.fr-visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-#frictionless-readtime-badge .fr-clock {
+#cookiecuttr-readtime-badge .fr-clock {
   font-size: 14px;
   color: #5b716b;
 }
 
-#frictionless-readtime-badge .fr-text {
+#cookiecuttr-readtime-badge .fr-text {
   white-space: nowrap;
   font-weight: 500;
 }
 
-#frictionless-readtime-badge .fr-close {
+#cookiecuttr-readtime-badge .fr-close {
   all: unset;
   cursor: pointer;
   color: #727b7b;
@@ -49,6 +49,6 @@
   pointer-events: auto;
 }
 
-#frictionless-readtime-badge .fr-close:hover {
+#cookiecuttr-readtime-badge .fr-close:hover {
   color: #202a2d;
 }
