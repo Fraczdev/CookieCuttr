@@ -37,6 +37,12 @@ for (const browser of ['chrome', 'firefox']) {
     assert.match(background, /changeInfo\.status !== 'complete'/);
     assert.match(background, /attempts < 10/);
     assert.ok(manifest.permissions.includes('tabs'));
+    if (browser === 'firefox') {
+      assert.deepEqual(
+        manifest.browser_specific_settings?.gecko?.data_collection_permissions,
+        { required: ['none'] }
+      );
+    }
     assert.match(html, /id="forceBadgeBtn"/);
     assert.match(popup, /FORCE_READ_BADGE/);
     assert.match(content, /injectReadTimeBadge\(true\)/);
