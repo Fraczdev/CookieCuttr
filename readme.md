@@ -47,11 +47,9 @@ A lightweight extension with three content-script features and a stats popup:
 ## Try it (Chrome / Edge / Brave)
 1. Go to `chrome://extensions`
 2. Turn on **Developer mode** (top-right toggle)
-3. Click **Load extension from zip file** and select this `cookiecuttr-chrome` or `cookiecuttr-firefox` zip files in releases, depending on your browser.
-OR
-2. Visit the chrome extension marketplace, and search for 'Cookiecuttr', and install it.
-3. Visit a few news sites — you should see cookie banners disappear on load and a read-time badge appear in the top-right of article pages
-4. Click the extension icon in the toolbar to see live stats and toggle features
+3. Click **Load extension from zip file** and select the `cookiecuttr-chrome` or `cookiecuttr-firefox` zip file for your browser.
+
+Alternatively, visit the Chrome extension marketplace, search for **Cookiecuttr**, and install it. Then visit a few news sites and click the extension icon to view stats and controls.
 
 ## Files
 - `manifest.json` — extension config (Manifest V3)
@@ -80,8 +78,7 @@ A `browser_specific_settings.gecko.id` was added, which Firefox requires for per
 3. Select the `manifest.json` file inside this `cookiecuttr-firefox` folder
 4. Visit a few news sites — cookie banners should disappear on load and a read-time badge should appear on article pages
 5. Click the toolbar icon for live stats and feature toggles
-OR
-1. Go to `addons.mozilla.org`
-2. Find addons -> Search for `Cookiecuttr` and install it.
+
+Alternatively, go to `addons.mozilla.org`, search for **Cookiecuttr**, and install it.
 
 Note: temporary add-ons are removed when Firefox restarts. For a permanent install during development, use `about:config` → set `xpinstall.signatures.required` to `false` on Firefox Developer Edition or Nightly, or search it on the extension marketplace for a permanent installation.
