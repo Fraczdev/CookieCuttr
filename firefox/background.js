@@ -68,5 +68,3 @@ function flushStats() {
 }
 
 
-
-/*   This is a workaround for Firefox not supporting the "storage" permission in manifest v3. */

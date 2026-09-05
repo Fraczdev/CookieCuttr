@@ -44,55 +44,37 @@
 
 
   const REJECT_PHRASES = [
-    // English
     'reject all', 'reject', 'decline all', 'decline', 'disagree', 'deny',
     'necessary only', 'only necessary', 'no thanks', 'do not accept',
     'use necessary cookies only', 'continue without accepting',
-    // Italian
     'rifiuta tutto', 'rifiuta tutti', 'rifiuta', 'nega', 'solo necessari',
     'solo essenziali', 'no grazie', 'continua senza accettare', 'rifiuta i cookie',
-    // French
     'rejeter tout', 'rejeter', 'refuser tout', 'refuser', 'uniquement nécessaire',
     'uniquement nécessaires', 'non merci', 'continuer sans accepter',
-    // German
     'alle ablehnen', 'ablehnen', 'nur notwendige', 'nur erforderliche', 'nein danke',
-    // Spanish
     'rechazar todo', 'rechazar todas', 'rechazar', 'solo necesarias',
     'solo necesario', 'no gracias', 'continuar sin aceptar',
-    // Portuguese
     'rejeitar tudo', 'rejeitar', 'recusar tudo', 'recusar',
     'apenas necessários', 'não obrigado', 'continuar sem aceitar',
-    // Dutch
     'alles weigeren', 'weigeren', 'alleen noodzakelijke', 'nee bedankt',
     'doorgaan zonder te accepteren',
-    // Polish
     'odrzuć wszystkie', 'odrzuć', 'tylko niezbędne', 'nie dziękuję',
-    // Swedish / Danish / Norwegian
     'avvisa alla', 'avvisa', 'endast nödvändiga', 'nej tack',
     'afvis alle', 'afvis', 'kun nødvendige', 'nej tak',
     'avvis alle', 'avvis', 'nei takk'
   ];
 
   const ACCEPT_PHRASES = [
-    // English
     'accept all', 'accept', 'i agree', 'agree', 'allow all', 'got it',
     'ok', 'okay', 'yes, i accept', 'yes i accept', 'allow cookies',
-    // Italian
     'accetta tutto', 'accetta tutti', 'accetta', 'consenti tutti',
     'ho capito', 'va bene',
-    // French
     "accepter tout", "j'accepte", 'accepter', "autoriser tout", "d'accord",
-    // German
     'alle akzeptieren', 'akzeptieren', 'ich stimme zu', 'zustimmen', 'verstanden',
-    // Spanish
     'aceptar todo', 'aceptar todas', 'aceptar', 'de acuerdo', 'entendido',
-    // Portuguese
     'aceitar tudo', 'aceitar', 'concordo', 'entendi',
-    // Dutch
     'alles accepteren', 'accepteren', 'akkoord', 'begrepen',
-    // Polish
     'zaakceptuj wszystkie', 'akceptuj', 'zgadzam się', 'rozumiem',
-    // Swedish / Danish / Norwegian
     'acceptera alla', 'acceptera', 'jag godkänner',
     'accepter alle', 'jeg accepterer',
     'godta alle', 'godta', 'jeg godtar'
@@ -124,19 +106,12 @@
 
   const COOKIE_KEYWORDS = new RegExp([
     'cookie', 'cookies', 'consent', 'gdpr', 'rgpd', 'privacy',
-    // Italian
     'consenso', 'informativa', 'questo sito (utilizza|usa)',
-    // French
     'confidentialit\u00e9', 'ce site (utilise|web)',
-    // German
     'datenschutz', 'diese website verwendet',
-    // Spanish
     'privacidad', 'este sitio (usa|utiliza)',
-    // Portuguese
     'privacidade',
-    // Dutch
     'wij gebruiken cookies', 'beleid inzake cookies',
-    // generic English phrasing
     'we value your privacy', 'this (site|website) uses'
   ].join('|'), 'i');
 
@@ -317,7 +292,7 @@
     cookieInterval = setInterval(() => {
       ticks += 1;
       sweepForBanners();
-      if (ticks > 20) { // ~10s
+      if (ticks > 20) {
         clearInterval(cookieInterval);
         cookieInterval = null;
         cookieObserver.disconnect();
@@ -478,9 +453,6 @@
       sendResponse({ shown: Boolean(document.getElementById('frictionless-readtime-badge')) });
     }
   });
-
-  // Boot
-
 
   settingsReady.then(() => {
     startCookieSweeper();

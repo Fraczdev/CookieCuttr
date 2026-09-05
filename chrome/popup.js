@@ -1,4 +1,4 @@
-const SECONDS_SAVED_PER_BANNER = 5; // rough estimate of manual click+read time avoided
+const SECONDS_SAVED_PER_BANNER = 5;
 
 function formatTimeSaved(totalSeconds) {
   if (totalSeconds < 60) return `${totalSeconds}s`;
