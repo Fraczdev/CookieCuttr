@@ -31,9 +31,11 @@ for (const browser of ['chrome', 'firefox']) {
     assert.match(popup, /readingMarkers/);
     assert.match(popup, /ARM_READING_MARKER/);
     assert.match(popup, /RETURN_TO_READING_MARKER/);
-    assert.match(popup, /chrome\.tabs\.query\(\{\}/);
-    assert.match(popup, /chrome\.tabs\.create\(\{ url: marker\.url \}/);
-    assert.match(popup, /changeInfo\.status !== 'complete'/);
+    assert.match(popup, /chrome\.runtime\.sendMessage\(\{ type: 'RETURN_TO_READING_MARKER'/);
+    assert.match(background, /chrome\.tabs\.query\(\{\}/);
+    assert.match(background, /chrome\.tabs\.create\(\{ url: marker\.url \}/);
+    assert.match(background, /changeInfo\.status !== 'complete'/);
+    assert.match(background, /attempts < 10/);
     assert.ok(manifest.permissions.includes('tabs'));
     assert.match(html, /id="forceBadgeBtn"/);
     assert.match(popup, /FORCE_READ_BADGE/);
@@ -58,4 +60,9 @@ test('both browsers include the BBC consent path', () => {
     assert.match(source, /i do not agree/);
     assert.match(source, /title="I do not agree" i/);
   }
+});
+
+test('Chrome reading badge is anchored on the left', () => {
+  const css = read('chrome/content.css');
+  assert.match(css, /top: 16px;\s+left: 16px;/);
 });

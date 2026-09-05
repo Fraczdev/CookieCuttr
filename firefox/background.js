@@ -21,6 +21,10 @@ chrome.runtime.onInstalled.addListener(() => {
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (!msg || !msg.type) return;
 
+  if (msg.type === 'RETURN_TO_READING_MARKER' && msg.marker?.url) {
+    returnToReadingMarker(msg.marker);
+  }
+
   if (msg.type === 'SAVE_READING_MARKER' && msg.marker?.url) {
     chrome.storage.local.get(['readingMarkers'], ({ readingMarkers = [] }) => {
       const markers = Array.isArray(readingMarkers) ? [...readingMarkers] : [];
@@ -44,6 +48,36 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
   return true;
 });
+
+function sendMarkerToTab(tabId, marker, attempts = 0) {
+  chrome.tabs.sendMessage(tabId, { type: 'RETURN_TO_READING_MARKER', marker }, () => {
+    if (chrome.runtime.lastError && attempts < 10) {
+      setTimeout(() => sendMarkerToTab(tabId, marker, attempts + 1), 250);
+    }
+  });
+}
+
+function returnToReadingMarker(marker) {
+  chrome.tabs.query({}, (tabs) => {
+    const existingTab = tabs.find((tab) => tab.url === marker.url && tab.id);
+    if (existingTab) {
+      chrome.tabs.update(existingTab.id, { active: true }, () => sendMarkerToTab(existingTab.id, marker));
+      return;
+    }
+
+    const onUpdated = (tabId, changeInfo) => {
+      if (tabId !== pendingTabId || changeInfo.status !== 'complete') return;
+      chrome.tabs.onUpdated.removeListener(onUpdated);
+      sendMarkerToTab(tabId, marker);
+    };
+    let pendingTabId = null;
+    chrome.tabs.onUpdated.addListener(onUpdated);
+    chrome.tabs.create({ url: marker.url }, (newTab) => {
+      pendingTabId = newTab?.id || null;
+      if (!pendingTabId) chrome.tabs.onUpdated.removeListener(onUpdated);
+    });
+  });
+}
 
 const pendingStats = new Map();
 let statsFlushTimer = null;

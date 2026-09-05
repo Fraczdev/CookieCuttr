@@ -96,25 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }));
 
   function returnToMarker(marker) {
-    chrome.tabs.query({}, (tabs) => {
-      const existingTab = tabs.find((tab) => tab.url === marker.url && tab.id);
-      if (existingTab) {
-        chrome.tabs.update(existingTab.id, { active: true }, () => {
-          chrome.tabs.sendMessage(existingTab.id, { type: 'RETURN_TO_READING_MARKER', marker });
-        });
-        return;
-      }
-
-      chrome.tabs.create({ url: marker.url }, (newTab) => {
-        if (!newTab || !newTab.id) return;
-        const onUpdated = (tabId, changeInfo) => {
-          if (tabId !== newTab.id || changeInfo.status !== 'complete') return;
-          chrome.tabs.onUpdated.removeListener(onUpdated);
-          chrome.tabs.sendMessage(tabId, { type: 'RETURN_TO_READING_MARKER', marker });
-        };
-        chrome.tabs.onUpdated.addListener(onUpdated);
-      });
-    });
+    chrome.runtime.sendMessage({ type: 'RETURN_TO_READING_MARKER', marker });
   }
 
   document.querySelectorAll('.marker-return').forEach((button) => button.addEventListener('click', () => {
