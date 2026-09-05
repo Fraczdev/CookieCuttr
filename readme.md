@@ -1,20 +1,21 @@
 # Cookiecuttr
 
-A web browser extension that silently rejects cookie/consent banners and shows you how long an article will take to read before you commit to it.
+A browser extension that gets cookie banners out of the way, gives you a quick reading estimate, and lets you save your place in an article.
 (Chrome / Manifest V3)
 
 ## The problem
 
-A few problems repeat on almost every website you visit:
+A few small problems get in the way of reading online:
 
-1. **Cookie/consent banners.** Every single site now interrupts you with a popup asking about cookies. You click "reject" (or hunt for it under "manage preferences") dozens of times a day, on every device, forever. It's the same click, over and over, for zero personal benefit.
-2. **Committing to an article blind.** You click a link with no idea if it's a 2-minute read or a 20-minute one, so you either bail partway through or avoid long pieces you'd have actually wanted to read.
+1. **Cookie/consent banners.** Sites interrupt the page with a consent popup. Finding the reject or necessary-only option is often harder than it should be.
+2. **Committing to an article blind.** A link rarely tells you whether the article is a two-minute read or a twenty-minute read. That makes it easy to start something you cannot finish.
+3. **Losing your place.** If you close an article, switch tabs, or need to stop reading, it is not always easy to find the same paragraph again later.
 
-Neither problem is *hard* — they're just boring. That's exactly why it's a thing worth automating: a few seconds, saved thousands of times.
+CookieCuttr handles these repetitive parts so you can spend less time managing pages and more time reading them.
 
 ## What this does
 
-A lightweight extension with two content-script features and a stats popup:
+A lightweight extension with three content-script features and a stats popup:
 
 ### 1. Auto-skip cookie banners
 - Recognizes major consent platforms (OneTrust, Cookiebot, Quantcast/Sourcepoint, Didomi, Osano, Termly, CookieYes, Complianz, WP Cookie Law Info, Borlabs...) by their known DOM structure and clicks the **reject/necessary-only** control — never "accept," so it doesn't opt you into tracking on your behalf.
@@ -26,8 +27,9 @@ A lightweight extension with two content-script features and a stats popup:
 - Lets you decide *before* you start reading whether now is the moment, instead of scrolling to gauge length.
 
 ### 3. Reading marker
-- Provides three named marker slots. Place a slot, then click the page to save its URL and scroll position.
-- Restores a saved position later from that slot when you return to the matching page.
+- Provides three named marker slots. Place a slot, then click anywhere on the page to save its URL and scroll position.
+- Each slot can store an optional timestamp, which is useful for video pages or media articles.
+- Restores a saved position later, even if the original tab was closed. CookieCuttr finds the matching tab or opens the page again.
 
 ### 4. Stats + control popup
 - Click the toolbar icon to see how many banners have been auto-skipped, how many reading badges have been shown, and an estimated time saved.
@@ -37,10 +39,10 @@ A lightweight extension with two content-script features and a stats popup:
 - Add per-site exceptions so users can keep cookie banners or hide reading features on selected domains.
 
 ## The separate improvements
-1. **Removes a repetitive click** you make on nearly every site, without trading your privacy for convenience (it rejects, doesn't accept).
-2. **Gives you information you need *before* committing to a task** (reading an article), not after.
-3. **Lets you set placeholders** for whenever you need to take a break.
-4. **Makes the automation visible and trustworthy** via the stats popup — you can see exactly what it did and turn any part of it off.
+1. **Removes a repetitive click** without accepting tracking cookies on your behalf.
+2. **Shows the likely reading time before you start**, so you can choose an article that fits the time you have.
+3. **Saves your place when you need to stop**, and brings you back to it later even if the tab is gone.
+4. **Keeps the automation visible** through local stats and controls in the popup.
 
 ## Try it (Chrome / Edge / Brave)
 1. Go to `chrome://extensions`
