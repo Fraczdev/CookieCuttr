@@ -56,7 +56,7 @@ for (const browser of ['chrome', 'firefox']) {
   });
 }
 
-test('both browsers include the BBC consent path', () => {
+test('both browsers include the bbc consent path', () => {
   for (const browser of ['chrome', 'firefox']) {
     const source = read(`${browser}/content.js`);
     assert.match(source, /#bbccookies/);
