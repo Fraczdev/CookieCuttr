@@ -31,9 +31,9 @@ Grab it from addons.mozilla.org, where it's listed as Cookiecuttr.
 - `popup.html` / `popup.css` / `popup.js` — the toolbar popup
 
 ## Notes
-- Generic banner detection is heuristic and won't catch every design out there — the vendor-specific rules cover the platforms most sites actually use.
+- Generic banner detection is heuristic and doesn't catch every design; The vendor-specific rules cover the platforms most sites actually use.
 - Reading time is just words ÷ 200 wpm. Kept it simple on purpose.
-- Nothing leaves the browser — stats live in `chrome.storage.local` only.
+- Nothing leaves the browser. Stats live in `chrome.storage.local` only.
 
 ## Firefox build notes
 
