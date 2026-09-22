@@ -20,7 +20,9 @@ Cookiecuttr is a Chrome (Manifest V3) extension that clears cookie banners from 
 
 2. Turn on Developer mode.
 
-3. Click "Load extension from zip file". Pick `cookiecuttr-chrome.zip`.
+3. Go to the [releases page](https://github.com/Fraczdev/CookieCuttr/releases)
+
+4. Click "Load extension from zip file". Pick `cookiecuttr-chrome.zip`.
 
 (Cookiecuttr is not on the Chrome Web Store yet.)
 
